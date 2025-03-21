@@ -1,80 +1,294 @@
-<!-- Import/Export Section -->
-<div id="import-export" class="tab-content">
-  <div class="flex space-x-2">
-    <!-- Export Button -->
+<div class="w-full mx-auto md:w-3xl flex flex-col h-full">
+  <h1
+    class="text-3xl font-bold mb-6 text-center p-4 text-[#333333] dark:text-white"
+  >
+    Settings
+  </h1>
+
+  <div class="tabs transition duration-500 ease-in-out flex items-center">
     <button
-      id="export-btn"
-      (click)="exportData(exportFormat)"
-      class="bg-[#333] text-white px-4 py-2 rounded-lg w-1/2 hover:bg-[#404040] transition-colors cursor-pointer"
+      class="tab"
+      [class.active]="activeTab === 'url-management'"
+      (click)="selectTab('url-management')"
     >
-      ↑ Export
+      URL Management
     </button>
-    <!-- Import Button -->
     <button
-      id="import-btn"
-      (click)="importData(importInput)"
-      class="bg-[#333] text-white px-4 py-2 rounded-lg w-1/2 hover:bg-[#404040] transition-colors cursor-pointer"
+      class="tab"
+      [class.active]="activeTab === 'import-export'"
+      (click)="selectTab('import-export')"
     >
-      ↓ Import
+      Import / Export
+    </button>
+    <button
+      class="tab"
+      [class.active]="activeTab === 'documentation'"
+      (click)="selectTab('documentation')"
+    >
+      Documentation
+    </button>
+    <button
+      class="tab"
+      [class.active]="activeTab === 'appearance'"
+      (click)="selectTab('appearance')"
+    >
+      Appearance
     </button>
   </div>
 
-  <!-- Export Format Dropdown -->
-  <select
-    id="export-format"
-    [(ngModel)]="exportFormat"
-    class="border p-3 rounded-lg w-full mt-3 bg-white border-[#333] text-black dark:bg-[#1a1a1a] dark:text-white"
+  <div
+    id="url-management"
+    class="tab-content"
+    [class.active]="activeTab === 'url-management'"
   >
-    <option value="export-code" selected>Export code</option>
-    <option value="export-url">Export URL</option>
-    <option value="export-url-redirect">Export URL with redirect</option>
-  </select>
-
-  <!-- Import/Export Textarea -->
-  <div class="flex space-x-2 mt-3">
-    <textarea
-      id="import-input"
-      [(ngModel)]="importInput"
-      placeholder="Paste code to import or see exported code here"
-      class="border p-3 rounded-lg w-full h-24 resize-none border-[#333] bg-gray-50 text-black dark:bg-[#1a1a1a] dark:text-white"
-    ></textarea>
-    <!-- Copy Button -->
-    <button
-      id="copy-btn"
-      (click)="copyToClipboard(importInput)"
-      class="w-[10%] bg-[#333] text-white px-4 py-2 rounded-lg hover:bg-[#404040] transition-colors cursor-pointer"
+    <div
+      id="url-list"
+      class="p-4 space-y-3 overflow-y-auto border rounded-lg max-h-[40vh] min-h-[40vh] bg-gray-50 dark:border-gray-500 dark:bg-[#121212]"
     >
-      Copy
+      <div
+        *ngFor="let url of urlList; let i = index"
+        class="flex items-center space-x-2 bg-white p-2 rounded-lg border dark:bg-[#1a1a1a] dark:border-gray-600"
+      >
+        <button
+          (click)="moveUrlUp(i)"
+          class="text-black dark:text-white px-2 py-1 cursor-pointer"
+        >
+          ▲
+        </button>
+        <button
+          (click)="moveUrlDown(i)"
+          class="text-black dark:text-white px-2 py-1 cursor-pointer"
+        >
+          ▼
+        </button>
+        <input
+          [(ngModel)]="urlList[i]"
+          class="url-input border p-3 rounded-lg flex-1 w-full dark:bg-[#333333] dark:border-gray-600"
+        />
+        <button
+          (click)="removeUrl(i)"
+          class="text-black dark:text-white px-2 py-1 cursor-pointer"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+    <button
+      (click)="addUrl()"
+      class="bg-[#333] text-white px-4 py-3 rounded-lg w-full mt-4 hover:bg-[#404040] cursor-pointer transition-colors"
+    >
+      + Add URL
     </button>
+    <button
+      (click)="saveData()"
+      class="bg-gradient-to-r from-green-600 to-green-800 text-white px-4 py-2 rounded-lg w-full mt-4 hover:opacity-90 cursor-pointer transition-opacity"
+    >
+      Save
+    </button>
+  </div>
+
+  <div
+    id="appearance"
+    class="tab-content"
+    [class.active]="activeTab === 'appearance'"
+  >
+    <div
+      class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 justify-center max-w-[80vh] mx-auto"
+    >
+      <div
+        id="light-mode"
+        [ngClass]="{ selected: !isDarkMode }"
+        class="mode-option p-4 space-y-3 overflow-y-auto rounded-lg max-h-[26vh] min-h-[26vh] w-full sm:w-1/2 bg-white cursor-pointer hover:bg-gray-50 border border-gray-200"
+        (click)="setMode('light')"
+      >
+        <div class="flex flex-col space-y-2 sm:flex-row sm:space-x-8">
+          <div class="flex flex-col w-full sm:w-1/2">
+            <div class="bg-gray-200 p-2 mb-2 w-full h-1/2 rounded"></div>
+            <div class="bg-gray-200 p-2 mb-2 w-full h-1/2 rounded"></div>
+          </div>
+          <div
+            class="bg-gray-200 rounded-full p-2 mb-2 w-12 h-12 sm:mt-auto"
+          ></div>
+        </div>
+        <div class="bg-gray-200 p-2 rounded mb-2"></div>
+        <div class="bg-gray-200 p-2 rounded mb-2 min-h-[8vh]"></div>
+        <p class="text-center mt-4 text-gray-500">Light Mode</p>
+      </div>
+
+      <div
+        id="dark-mode"
+        [ngClass]="{ selected: isDarkMode }"
+        class="mode-option p-4 space-y-3 overflow-y-auto border rounded-lg max-h-[26vh] min-h-[26vh] w-full sm:w-1/2 bg-[#121212] text-white cursor-pointer hover:bg-[#1a1a1a]"
+        (click)="setMode('dark')"
+      >
+        <div class="flex flex-col space-y-2 sm:flex-row sm:space-x-8">
+          <div class="flex flex-col w-full sm:w-1/2">
+            <div class="bg-[#333] p-2 mb-2 w-full h-1/2 rounded"></div>
+            <div class="bg-[#333] p-2 mb-2 w-full h-1/2 rounded"></div>
+          </div>
+          <div
+            class="bg-[#333] rounded-full p-2 mb-2 w-12 h-12 sm:mt-auto"
+          ></div>
+        </div>
+        <div class="bg-[#333] p-2 rounded mb-2"></div>
+        <div class="bg-[#333] p-2 rounded mb-2 min-h-[8vh]"></div>
+        <p class="text-center mt-4 text-gray-400">Dark Mode</p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="import-export"
+    class="tab-content"
+    [class.active]="activeTab === 'import-export'"
+  >
+    <div class="flex space-x-2">
+      <button
+        (click)="exportData(exportFormat)"
+        class="bg-[#333] text-white px-4 py-2 rounded-lg w-1/2 hover:bg-[#404040] transition-colors cursor-pointer"
+      >
+        ↑ Export
+      </button>
+      <button
+        (click)="importData(importInput)"
+        class="bg-[#333] text-white px-4 py-2 rounded-lg w-1/2 hover:bg-[#404040] transition-colors cursor-pointer"
+      >
+        ↓ Import
+      </button>
+    </div>
+    <select
+      [(ngModel)]="exportFormat"
+      class="border p-3 rounded-lg w-full mt-3 bg-white border-[#333] text-black dark:bg-[#1a1a1a] dark:text-white"
+    >
+      <option value="export-code" selected>Export code</option>
+      <option value="export-url">Export URL</option>
+      <option value="export-url-redirect">Export URL with redirect</option>
+    </select>
+    <div class="flex space-x-2 mt-3">
+      <textarea
+        [(ngModel)]="importInput"
+        placeholder="Paste code to import or see exported code here"
+        class="border p-3 rounded-lg w-full h-24 resize-none border-[#333] bg-gray-50 text-black dark:bg-[#1a1a1a] dark:text-white"
+      ></textarea>
+      <button
+        (click)="copyToClipboard(importInput)"
+        class="w-[10%] bg-[#333] text-white px-4 py-2 rounded-lg hover:bg-[#404040] transition-colors cursor-pointer"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+          <path
+            fill-rule="evenodd"
+            d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z"
+          />
+          <path
+            d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="documentation"
+    class="tab-content"
+    [class.active]="activeTab === 'documentation'"
+  >
+    <h2 class="text-xl font-bold mb-2 text-black dark:text-white">
+      Quick Import:
+    </h2>
+    <p class="text-black dark:text-white">
+      Use the following URL format to import data automatically. If you want to
+      redirect to
+      <code class="text-black dark:text-white">/index.html</code> after
+      importing, add <code class="text-red-900">&redirect=true</code> in the
+      URL.
+    </p>
+    <pre
+      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
+    ><span class="text-white">/apis.html?import={{ '{' }}code{{ '}' }}&redirect=true</span></pre>
+
+    <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
+      URL Syntax:
+    </h2>
+    <pre
+      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
+    ><span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">/</span><span class="text-[#ff69b4]">id</span><span class="text-white">/</span><span class="text-[#00bcd4]">season</span><span class="text-white">/</span><span class="text-[#8bc34a]">episode</span></pre>
+
+    <p class="mb-2 mt-2 text-black dark:text-white">Manual Override:</p>
+    <pre
+      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
+    ><span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">&</span><span class="text-[#ff69b4]">tv</span><span class="text-white">=</span><span class="text-[#00bcd4]">series</span><span class="text-white">&</span><span class="text-[#8bc34a]">movie</span><span class="text-white">=</span><span class="text-[#00e676]">film</span></pre>
+
+    <p class="mt-2 text-black dark:text-white">
+      - <span class="text-[#ff8c00]">type</span> is automatically filled as
+      <em class="text-[#ff8c00]">movie</em> or
+      <em class="text-[#ff8c00]">tv show</em> based on the TMDB ID.<br />-
+      <span class="text-[#ff69b4]">id</span>,
+      <span class="text-[#00bcd4]">season</span>, and
+      <span class="text-[#8bc34a]">episode</span> are placeholders that will be
+      replaced dynamically.
+    </p>
+
+    <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
+      Example:
+    </h2>
+    <pre
+      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
+    ><span class="text-white">example.com/</span><span class="text-[#ff8c00]">movie</span><span class="text-white">/</span><span class="text-[#ff69b4]">12345</span><span class="text-white">/</span><span class="text-[#00bcd4]">1</span><span class="text-white">/</span><span class="text-[#8bc34a]">2</span></pre>
+
+    <p class="mt-2 text-black dark:text-white">
+      In this example, the <span class="text-[#ff8c00]">type</span> will be
+      movie, the <span class="text-[#ff69b4]">id</span> 12345 will be replaced
+      with the TMDB ID of the movie. The
+      <span class="text-[#00bcd4]">season</span> and
+      <span class="text-[#8bc34a]">episode</span> corresponds to a movie, with
+      season 1 and episode 2.
+    </p>
+    <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
+      Naming a Source
+    </h2>
+    <pre
+      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
+    ><span class="text-white">Example:</span> <span class="text-[#00e676]">https://example.com</span></pre>
+  </div>
+
+  <div class="p-4 border-t mt-4 flex-shrink-0 border-[#333]">
+    <button
+      (click)="closeSettings()"
+      class="bg-[#333] text-white px-4 py-2 rounded-lg w-full hover:bg-red-700 cursor-pointer transition-colors"
+    >
+      Close
+    </button>
+    <button
+      (click)="toggleDebugPanel()"
+      class="bg-[#333] text-white px-4 py-2 rounded-lg w-full mt-4 hover:opacity-80 cursor-pointer transition-opacity"
+    >
+      🛠 Debug Panel
+    </button>
+    <p class="text-sm text-center mt-4 text-gray-500">
+      Note: The URLs are stored in Local Storage. This page does not hold any
+      data.
+    </p>
   </div>
 </div>
 
-<!-- Debug Panel -->
 <div
-  id="debug-panel"
-  [class.hidden]="!debugPanelVisible"
+  *ngIf="debugPanelVisible"
   class="fixed top-10 left-1/2 transform -translate-x-1/2 bg-[#1a1a1a] border border-[#333] rounded-2xl shadow-2xl p-6 w-96 z-20 max-h-[90vh] overflow-y-auto"
 >
   <h2 class="text-2xl font-bold mb-4 text-center text-gray-200">
     Debug Panel 📝
   </h2>
-  <div id="debug-info" class="text-sm space-y-4 text-gray-300">
+  <div class="text-sm space-y-4 text-gray-300">
     <div *ngFor="let info of debugInfo">
-      <p>
-        <strong>URL {{ info.index + 1 }}:</strong> {{ info.url }}
-      </p>
+      <p>Index: {{ info.index }}</p>
+      <p>URL: {{ info.url }}</p>
       <p>Placeholders: {{ info.placeholders.join(", ") }}</p>
       <p>Completeness: {{ info.completeness }}</p>
-      <p *ngIf="info.missing.length > 0">
-        Missing: {{ info.missing.join(", ") }}
-      </p>
-      <p [class.text-green-500]="info.valid" [class.text-red-500]="!info.valid">
-        Valid: {{ info.valid ? "Yes" : "No" }}
-      </p>
+      <p>Missing: {{ info.missing.join(", ") }}</p>
+      <p>Valid: {{ info.valid ? "Yes" : "No" }}</p>
     </div>
   </div>
   <button
-    id="close-debug"
     (click)="toggleDebugPanel()"
     class="bg-[#333] text-white px-4 py-2 rounded-lg w-full mt-4 hover:bg-[#404040] transition-colors cursor-pointer"
   >

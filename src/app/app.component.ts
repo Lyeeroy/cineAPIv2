@@ -19,6 +19,8 @@ export class AppComponent implements OnInit {
   docsVisible = false;
   importInput: string = '';
   exportFormat: string = 'export-code'; // Default export format
+  activeTab: string = 'url-management';
+  isDarkMode: boolean = false;
 
   ngOnInit() {
     const params = new URLSearchParams(window.location.search);
@@ -39,10 +41,14 @@ export class AppComponent implements OnInit {
     } else {
       this.urlList = this.loadData();
     }
+
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    document.documentElement.classList.toggle('dark', this.isDarkMode);
   }
 
   saveData() {
     localStorage.setItem('urlList', JSON.stringify(this.urlList));
+    this.showPopup('Data Saved!', 'Your URL list has been saved successfully.');
   }
 
   loadData(): string[] {
@@ -116,7 +122,10 @@ export class AppComponent implements OnInit {
       const data = JSON.parse(atob(importData));
       this.urlList = data;
       this.saveData();
-      alert('Data imported successfully!');
+      this.showPopup(
+        'Data Imported!',
+        'Your URL list has been imported successfully.'
+      );
     } catch (e) {
       alert('Incorrect format');
     }
@@ -145,5 +154,43 @@ export class AppComponent implements OnInit {
         };
       });
     }
+  }
+
+  selectTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  setMode(mode: string) {
+    this.isDarkMode = mode === 'dark';
+    localStorage.setItem('darkMode', this.isDarkMode.toString());
+    document.documentElement.classList.toggle('dark', this.isDarkMode);
+  }
+
+  closeSettings() {
+    window.location.href = 'index.html';
+  }
+
+  showPopup(title: string, message: string) {
+    const popup = document.createElement('div');
+    popup.innerHTML = `
+      <div class="max-w-4xl mx-auto bg-gray-50 dark:bg-[#1a1a1a] dark:text-white border-t-[7px] border-green-500 text-gray-800 rounded-lg font-[sans-serif]" role="alert">
+        <div class="px-8 py-6 max-w-4xl">
+          <h4 class="font-bold text-lg mb-3">${title}</h4>
+          <p class="text-sm">${message}</p>
+        </div>
+      </div>
+    `;
+    popup.classList.add(
+      'fixed',
+      'top-20',
+      'left-1/2',
+      'transform',
+      '-translate-x-1/2',
+      '-translate-y-10px'
+    );
+    document.body.appendChild(popup);
+    setTimeout(() => {
+      document.body.removeChild(popup);
+    }, 1000);
   }
 }
