@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, CommonModule, HeaderComponent],
+  imports: [FormsModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
