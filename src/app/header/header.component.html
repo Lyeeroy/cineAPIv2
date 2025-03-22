@@ -1,0 +1,73 @@
+<header class="flex items-center bg-gray-800 text-white p-2 h-10 relative">
+  <!-- Left sidebar toggle -->
+  <button
+    class="bg-transparent border-none text-white text-xl px-4 py-0 cursor-pointer"
+    (click)="toggleSidebar()"
+  >
+    ☰
+  </button>
+
+  <!-- Sidebar -->
+  <nav
+    class="fixed -left-64 top-10 bottom-0 w-64 bg-gray-900 transition-all duration-300 z-50"
+    [class.left-0]="isSidebarOpen"
+  >
+    <ul class="list-none p-0 m-0">
+      <li>
+        <a class="text-white no-underline p-4 block hover:bg-gray-700" href="#"
+          >Settings</a
+        >
+      </li>
+      <li>
+        <a class="text-white no-underline p-4 block hover:bg-gray-700" href="#"
+          >History</a
+        >
+      </li>
+      <li>
+        <a class="text-white no-underline p-4 block hover:bg-gray-700" href="#"
+          >Downloads</a
+        >
+      </li>
+      <li>
+        <a class="text-white no-underline p-4 block hover:bg-gray-700" href="#"
+          >Favorites</a
+        >
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Tabs section -->
+  <div class="flex-grow overflow-x-auto mx-3">
+    <div class="flex h-8 items-center">
+      <div
+        *ngFor="let tab of tabs"
+        class="flex items-center bg-gray-600 text-white px-6 py-2 rounded-t mr-0.5 cursor-pointer max-w-48 min-w-30 relative"
+        [class.bg-gray-700]="tab.active"
+        [class.z-10]="tab.active"
+        (click)="setActiveTab(tab.id)"
+      >
+        <span class="truncate">{{ tab.title }}</span>
+        <span
+          class="ml-auto pl-2 opacity-70 hover:opacity-100"
+          (click)="closeTab(tab.id)"
+        >
+          ×
+        </span>
+      </div>
+      <button
+        class="bg-gray-500 border-none text-white px-4 py-0 rounded-t cursor-pointer h-8"
+        (click)="addNewTab()"
+      >
+        +
+      </button>
+    </div>
+  </div>
+
+  <!-- Clear all tabs -->
+  <button
+    class="bg-transparent border-none text-white px-4 py-0 cursor-pointer font-bold"
+    (click)="clearAllTabs()"
+  >
+    X
+  </button>
+</header>

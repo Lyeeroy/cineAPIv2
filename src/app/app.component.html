@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="w-full mx-auto md:w-3xl flex flex-col h-full">
   <h1
     class="text-3xl font-bold mb-6 text-center p-4 text-[#333333] dark:text-white"
@@ -63,6 +64,7 @@
         </button>
         <input
           [(ngModel)]="urlList[i]"
+          [ngModelOptions]="{ updateOn: 'blur' }"
           class="url-input border p-3 rounded-lg flex-1 w-full dark:bg-[#333333] dark:border-gray-600"
         />
         <button

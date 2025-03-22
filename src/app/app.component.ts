@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -31,7 +32,7 @@ export class AppComponent implements OnInit {
       try {
         const data = JSON.parse(atob(importCode));
         this.urlList = data;
-        this.saveData();
+
         if (redirect) {
           window.location.href = 'index.html';
         }
@@ -59,12 +60,10 @@ export class AppComponent implements OnInit {
   addUrl(value = '') {
     if (this.urlList.length >= this.maxUrls) return;
     this.urlList.push(value);
-    this.saveData();
   }
 
   removeUrl(index: number) {
     this.urlList.splice(index, 1);
-    this.saveData();
   }
 
   moveUrlUp(index: number) {
@@ -72,7 +71,6 @@ export class AppComponent implements OnInit {
       const temp = this.urlList[index];
       this.urlList[index] = this.urlList[index - 1];
       this.urlList[index - 1] = temp;
-      this.saveData();
     }
   }
 
@@ -81,7 +79,6 @@ export class AppComponent implements OnInit {
       const temp = this.urlList[index];
       this.urlList[index] = this.urlList[index + 1];
       this.urlList[index + 1] = temp;
-      this.saveData();
     }
   }
 
@@ -121,7 +118,7 @@ export class AppComponent implements OnInit {
         : inputData;
       const data = JSON.parse(atob(importData));
       this.urlList = data;
-      this.saveData();
+
       this.showPopup(
         'Data Imported!',
         'Your URL list has been imported successfully.'
