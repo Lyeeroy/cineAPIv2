@@ -5,7 +5,7 @@
     Settings
   </h1>
 
-  <div class="tabs transition duration-500 ease-in-out flex items-center">
+  <div class="tabs transition duration-500 ease-in-out flex items-center mb-4">
     <button
       class="tab"
       [class.active]="activeTab === 'url-management'"
@@ -36,58 +36,92 @@
     </button>
   </div>
 
+  <!-- URL Management Tab: Enhanced Table with Modern Look -->
   <div
     id="url-management"
     class="tab-content"
     [class.active]="activeTab === 'url-management'"
   >
-    <div
-      id="url-list"
-      class="p-4 space-y-3 overflow-y-auto border rounded-lg max-h-[40vh] min-h-[40vh] bg-gray-50 dark:border-gray-500 dark:bg-[#121212]"
-    >
-      <div
-        *ngFor="let url of urlList; let i = index; trackBy: trackByIndex"
-        class="flex items-center space-x-2 bg-white p-2 rounded-lg border dark:bg-[#1a1a1a] dark:border-gray-600"
+    <!-- Save and Delete All Buttons -->
+    <div class="flex justify-between mb-2">
+      <button
+        (click)="saveData()"
+        class="bg-gradient-to-r from-green-600 to-green-800 text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
       >
-        <button
-          (click)="moveUrlUp(i)"
-          class="text-black dark:text-white px-2 py-1 cursor-pointer"
-        >
-          ▲
-        </button>
-        <button
-          (click)="moveUrlDown(i)"
-          class="text-black dark:text-white px-2 py-1 cursor-pointer"
-        >
-          ▼
-        </button>
-        <input
-          [(ngModel)]="urlList[i]"
-          [ngModelOptions]="{ updateOn: 'blur' }"
-          class="url-input border p-3 rounded-lg flex-1 w-full dark:bg-[#333333] dark:border-gray-600"
-        />
-        <button
-          (click)="removeUrl(i)"
-          class="text-black dark:text-white px-2 py-1 cursor-pointer"
-        >
-          ✕
-        </button>
-      </div>
+        Save
+      </button>
+      <button
+        (click)="deleteAll()"
+        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+      >
+        Delete All
+      </button>
     </div>
-    <button
-      (click)="addUrl()"
-      class="bg-[#333] text-white px-4 py-3 rounded-lg w-full mt-4 hover:bg-[#404040] cursor-pointer transition-colors"
-    >
-      + Add URL
-    </button>
-    <button
-      (click)="saveData()"
-      class="bg-gradient-to-r from-green-600 to-green-800 text-white px-4 py-2 rounded-lg w-full mt-4 hover:opacity-90 cursor-pointer transition-opacity"
-    >
-      Save
-    </button>
+    <div class="overflow-x-auto">
+      <table
+        class="w-full border-collapse bg-gray-50 dark:bg-[#121212] rounded-tl-md rounded-tr-md overflow-hidden"
+      >
+        <thead>
+          <tr class="bg-[#333] text-gray-100 dark:bg-gray-700">
+            <th class="p-2 text-center w-12 rounded-tl-md">Arrows</th>
+            <th class="p-2 text-left w-12">#</th>
+            <th class="p-2 text-left">URL</th>
+            <th class="p-2 text-center w-20 rounded-tr-md">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let url of urlList; let i = index; trackBy: trackByIndex"
+            class="border-t border-[#333] dark:border-gray-600"
+          >
+            <!-- Vertical arrows column with reduced padding -->
+            <td class="p-2 text-center">
+              <div class="flex flex-col items-center space-y-1">
+                <button
+                  (click)="moveUrlUp(i)"
+                  class="px-2 py-1 text-sm hover:bg-gray-300 dark:hover:bg-gray-500 rounded"
+                >
+                  ▲
+                </button>
+                <button
+                  (click)="moveUrlDown(i)"
+                  class="px-2 py-1 text-sm hover:bg-gray-300 dark:hover:bg-gray-500 rounded"
+                >
+                  ▼
+                </button>
+              </div>
+            </td>
+            <td class="p-2">{{ i + 1 }}</td>
+            <td class="p-2">
+              <input
+                [(ngModel)]="urlList[i]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                class="w-full border p-2 rounded-md dark:bg-[#333333] dark:border-gray-600"
+              />
+            </td>
+            <td class="p-2 text-center">
+              <button
+                (click)="removeUrl(i)"
+                class="px-2 py-1 text-sm hover:bg-red-400 dark:hover:bg-red-700 rounded"
+              >
+                ✕
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-0">
+      <button
+        (click)="addUrl()"
+        class="bg-[#333] text-white px-4 py-3 rounded-bl-md rounded-br-md hover:bg-[#404040] transition-colors w-full"
+      >
+        + Add URL
+      </button>
+    </div>
   </div>
 
+  <!-- Appearance Tab (unchanged) -->
   <div
     id="appearance"
     class="tab-content"
@@ -99,7 +133,7 @@
       <div
         id="light-mode"
         [ngClass]="{ selected: !isDarkMode }"
-        class="mode-option p-4 space-y-3 overflow-y-auto rounded-lg max-h-[26vh] min-h-[26vh] w-full sm:w-1/2 bg-white cursor-pointer hover:bg-gray-50 border border-gray-200"
+        class="mode-option p-4 rounded-lg max-h-[26vh] min-h-[26vh] w-full sm:w-1/2 bg-white cursor-pointer hover:bg-gray-50 border border-gray-200"
         (click)="setMode('light')"
       >
         <div class="flex flex-col space-y-2 sm:flex-row sm:space-x-8">
@@ -115,11 +149,10 @@
         <div class="bg-gray-200 p-2 rounded mb-2 min-h-[8vh]"></div>
         <p class="text-center mt-4 text-gray-500">Light Mode</p>
       </div>
-
       <div
         id="dark-mode"
         [ngClass]="{ selected: isDarkMode }"
-        class="mode-option p-4 space-y-3 overflow-y-auto border rounded-lg max-h-[26vh] min-h-[26vh] w-full sm:w-1/2 bg-[#121212] text-white cursor-pointer hover:bg-[#1a1a1a]"
+        class="mode-option p-4 rounded-lg max-h-[26vh] min-h-[26vh] w-full sm:w-1/2 bg-[#121212] text-white cursor-pointer hover:bg-[#1a1a1a]"
         (click)="setMode('dark')"
       >
         <div class="flex flex-col space-y-2 sm:flex-row sm:space-x-8">
@@ -138,6 +171,7 @@
     </div>
   </div>
 
+  <!-- Import/Export Tab (unchanged) -->
   <div
     id="import-export"
     class="tab-content"
@@ -146,20 +180,20 @@
     <div class="flex space-x-2">
       <button
         (click)="exportData(exportFormat)"
-        class="bg-[#333] text-white px-4 py-2 rounded-lg w-1/2 hover:bg-[#404040] transition-colors cursor-pointer"
+        class="bg-[#333] text-white px-4 py-2 rounded w-1/2 hover:bg-[#404040] transition-colors"
       >
         ↑ Export
       </button>
       <button
         (click)="importData(importInput)"
-        class="bg-[#333] text-white px-4 py-2 rounded-lg w-1/2 hover:bg-[#404040] transition-colors cursor-pointer"
+        class="bg-[#333] text-white px-4 py-2 rounded w-1/2 hover:bg-[#404040] transition-colors"
       >
         ↓ Import
       </button>
     </div>
     <select
       [(ngModel)]="exportFormat"
-      class="border p-3 rounded-lg w-full mt-3 bg-white border-[#333] text-black dark:bg-[#1a1a1a] dark:text-white"
+      class="border p-3 rounded w-full mt-3 bg-white border-[#333] text-black dark:bg-[#1a1a1a] dark:text-white"
     >
       <option value="export-code" selected>Export code</option>
       <option value="export-url">Export URL</option>
@@ -169,11 +203,11 @@
       <textarea
         [(ngModel)]="importInput"
         placeholder="Paste code to import or see exported code here"
-        class="border p-3 rounded-lg w-full h-24 resize-none border-[#333] bg-gray-50 text-black dark:bg-[#1a1a1a] dark:text-white"
+        class="border p-3 rounded w-full h-24 resize-none border-[#333] bg-gray-50 text-black dark:bg-[#1a1a1a] dark:text-white"
       ></textarea>
       <button
         (click)="copyToClipboard(importInput)"
-        class="w-[10%] bg-[#333] text-white px-4 py-2 rounded-lg hover:bg-[#404040] transition-colors cursor-pointer"
+        class="w-[10%] bg-[#333] text-white px-4 py-2 rounded hover:bg-[#404040] transition-colors"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
           <path
@@ -188,6 +222,7 @@
     </div>
   </div>
 
+  <!-- Documentation Tab (unchanged) -->
   <div
     id="documentation"
     class="tab-content"
@@ -203,22 +238,19 @@
       importing, add <code class="text-red-900">&redirect=true</code> in the
       URL.
     </p>
-    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+    <pre class="bg-[#1a1a1a] p-3 rounded text-sm mt-2">
 <span class="text-white">/apis.html?import={{ '{' }}code{{ '}' }}&redirect=true</span>
     </pre>
-
     <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
       URL Syntax:
     </h2>
-    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+    <pre class="bg-[#1a1a1a] p-3 rounded text-sm mt-2">
 <span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">/</span><span class="text-[#ff69b4]">id</span><span class="text-white">/</span><span class="text-[#00bcd4]">season</span><span class="text-white">/</span><span class="text-[#8bc34a]">episode</span>
     </pre>
-
     <p class="mb-2 mt-2 text-black dark:text-white">Manual Override:</p>
-    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+    <pre class="bg-[#1a1a1a] p-3 rounded text-sm mt-2">
 <span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">&</span><span class="text-[#ff69b4]">tv</span><span class="text-white">=</span><span class="text-[#00bcd4]">series</span><span class="text-white">&</span><span class="text-[#8bc34a]">movie</span><span class="text-white">=</span><span class="text-[#00e676]">film</span>
     </pre>
-
     <p class="mt-2 text-black dark:text-white">
       - <span class="text-[#ff8c00]">type</span> is automatically filled as
       <em class="text-[#ff8c00]">movie</em> or
@@ -228,14 +260,12 @@
       <span class="text-[#8bc34a]">episode</span> are placeholders that will be
       replaced dynamically.
     </p>
-
     <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
       Example:
     </h2>
-    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+    <pre class="bg-[#1a1a1a] p-3 rounded text-sm mt-2">
 <span class="text-white">example.com/</span><span class="text-[#ff8c00]">movie</span><span class="text-white">/</span><span class="text-[#ff69b4]">12345</span><span class="text-white">/</span><span class="text-[#00bcd4]">1</span><span class="text-white">/</span><span class="text-[#8bc34a]">2</span>
     </pre>
-
     <p class="mt-2 text-black dark:text-white">
       In this example, the <span class="text-[#ff8c00]">type</span> will be
       movie, the <span class="text-[#ff69b4]">id</span> 12345 will be replaced
@@ -247,7 +277,7 @@
     <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
       Naming a Source
     </h2>
-    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+    <pre class="bg-[#1a1a1a] p-3 rounded text-sm mt-2">
 <span class="text-white">Example:</span> <span class="text-[#00e676]">https://example.com</span>
     </pre>
   </div>
@@ -255,13 +285,13 @@
   <div class="p-4 border-t mt-4 flex-shrink-0 border-[#333]">
     <button
       (click)="closeSettings()"
-      class="bg-[#333] text-white px-4 py-2 rounded-lg w-full hover:bg-red-700 cursor-pointer transition-colors"
+      class="bg-[#333] text-white px-4 py-2 rounded w-full hover:bg-red-700 transition-colors"
     >
       Close
     </button>
     <button
       (click)="toggleDebugPanel()"
-      class="bg-[#333] text-white px-4 py-2 rounded-lg w-full mt-4 hover:opacity-80 cursor-pointer transition-opacity"
+      class="bg-[#333] text-white px-4 py-2 rounded w-full mt-4 hover:opacity-80 transition-opacity"
     >
       🛠 Debug Panel
     </button>
@@ -279,19 +309,34 @@
   <h2 class="text-2xl font-bold mb-4 text-center text-gray-200">
     Debug Panel 📝
   </h2>
-  <div class="text-sm space-y-4 text-gray-300">
-    <div *ngFor="let info of debugInfo; trackBy: trackByIndex">
-      <p>Index: {{ info.index }}</p>
-      <p>URL: {{ info.url }}</p>
-      <p>Placeholders: {{ info.placeholders.join(", ") }}</p>
-      <p>Completeness: {{ info.completeness }}</p>
-      <p>Missing: {{ info.missing.join(", ") }}</p>
-      <p>Valid: {{ info.valid ? "Yes" : "No" }}</p>
-    </div>
-  </div>
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="border-b dark:border-gray-600">
+        <th class="p-2 text-left">Index</th>
+        <th class="p-2 text-left">URL</th>
+        <th class="p-2 text-left">Placeholders</th>
+        <th class="p-2 text-center">Complete</th>
+        <th class="p-2 text-left">Missing</th>
+        <th class="p-2 text-center">Valid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let info of debugInfo; trackBy: trackByIndex"
+        class="border-b dark:border-gray-600"
+      >
+        <td class="p-2">{{ info.index }}</td>
+        <td class="p-2">{{ info.url }}</td>
+        <td class="p-2">{{ info.placeholders.join(", ") }}</td>
+        <td class="p-2 text-center">{{ info.completeness }}</td>
+        <td class="p-2">{{ info.missing.join(", ") }}</td>
+        <td class="p-2 text-center">{{ info.valid ? "Yes" : "No" }}</td>
+      </tr>
+    </tbody>
+  </table>
   <button
     (click)="toggleDebugPanel()"
-    class="bg-[#333] text-white px-4 py-2 rounded-lg w-full mt-4 hover:bg-[#404040] transition-colors cursor-pointer"
+    class="bg-[#333] text-white px-4 py-2 rounded w-full mt-4 hover:bg-[#404040] transition-colors"
   >
     Close
   </button>

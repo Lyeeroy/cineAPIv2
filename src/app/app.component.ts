@@ -50,6 +50,11 @@ export class AppComponent implements OnInit {
     this.showPopup('Data Saved!', 'Your URL list has been saved successfully.');
   }
 
+  deleteAll() {
+    this.urlList = [];
+    this.showPopup('Deleted!', 'All URLs have been removed.');
+  }
+
   loadData(): string[] {
     const data = localStorage.getItem('urlList');
     return data ? JSON.parse(data) : [];
