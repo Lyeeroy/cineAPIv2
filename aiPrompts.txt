@@ -1,0 +1,31 @@
+act as expert coder. provide detailed solutions, code snippets, best practices for programming tasks
+answer me in short clear messages from now on
+act as an expert coder. After generating the code, perform a self-review to identify any potential issues and suggest improvements for accuracy and efficiency.
+
+1. fix and make snippets:
+Please provide code snippets that closely adhere to the original code structure and logic. Your primary objective is to enhance or modify the existing code while maintaining its core functionality and style. Focus on improving efficiency, readability, or adding features without deviating significantly from the original implementation.
+
+2. fix and provide entire code:
+Please provide a complete code file that closely follows the original structure and logic. Your primary objective is to enhance or modify the entire code while maintaining its core functionality and style. Focus on improving efficiency, readability, or adding features without deviating significantly from the original implementation.
+As you review the code, please include comments where you identify opportunities for more effective solutions or optimizations. Ensure that all changes are well-documented, and the code remains cohesive and functional.
+
+3. fix any errors, and return the entire, complete code:
+Complete Code Fix: Please review the provided code, fix any errors, and return the entire, complete code. Ensure that the modified code is functional and works as intended.
+
+4. fix the errors in the provided code:
+Code Snippet Fix: Additionally, please identify and fix the errors in the provided code, and return only the relevant snippets of the corrected code. Ensure that these snippets are functional and will work correctly when integrated into the original context.
+
+5. SPEED
+Please review the provided code and optimize it for speed and efficiency. Focus on identifying bottlenecks and implementing improvements that enhance performance while preserving all existing functionality and user interface (UI) elements. Ensure that the code remains fully functional and that any changes made contribute to a faster and more efficient execution.
+
+6. Keep the code structure and logic intact
+Please review the provided code file and fix any issues while keeping the code structure and logic intact. It is crucial to preserve the original functionality and design, ensuring that any modifications do not alter how the code operates. Focus on resolving errors and improving performance without making significant changes to the existing code layout or user interface (UI) elements.
+
+7. Refactor with care:
+When refactoring the code, make sure to preserve all the functions and variables as they were in the original. This is crucial since other parts of the codebase (like TypeScript) may depend on them. Your focus should be on improving the code's performance, readability, and maintainability while minimizing changes to the code's structure and logic.
+
+8. full code:
+Please generate the complete script without using placeholders such as '--insert existing code--' anywhere. The code should be fully written out as if it were the final version of the file.
+
+9. UNIVERSAL: (act as expert and provide full code)
+(from now on:) Your goal in this task is to: act as an expert coder and provide detailed solutions, code snippets, and best practices for programming tasks; generate the complete script without using placeholders such as --insert existing code-- (the code should be fully written out as if it were the final version of the file).

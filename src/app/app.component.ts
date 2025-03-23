@@ -9,16 +9,16 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  placeholderTags = ['#type', '#id', '#season', '#episode'];
-  placeholderRegex = /#type|#id|#season|#episode/g;
-  maxUrls = 999;
-  baseDomain = 'https://lyeeroy.github.io/CineAPI/';
+  readonly placeholderTags = ['#type', '#id', '#season', '#episode'];
+  readonly placeholderRegex = /#type|#id|#season|#episode/g;
+  readonly maxUrls = 999;
+  readonly baseDomain = 'https://lyeeroy.github.io/CineAPI/';
   urlList: string[] = [];
   debugInfo: any[] = [];
   debugPanelVisible = false;
   docsVisible = false;
   importInput: string = '';
-  exportFormat: string = 'export-code'; // Default export format
+  exportFormat: string = 'export-code';
   activeTab: string = 'url-management';
   isDarkMode: boolean = false;
 
@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
       try {
         const data = JSON.parse(atob(importCode));
         this.urlList = data;
-
         if (redirect) {
           window.location.href = 'index.html';
         }
@@ -67,29 +66,32 @@ export class AppComponent implements OnInit {
 
   moveUrlUp(index: number) {
     if (index > 0) {
-      const temp = this.urlList[index];
-      this.urlList[index] = this.urlList[index - 1];
-      this.urlList[index - 1] = temp;
+      [this.urlList[index - 1], this.urlList[index]] = [
+        this.urlList[index],
+        this.urlList[index - 1],
+      ];
     }
   }
 
   moveUrlDown(index: number) {
     if (index < this.urlList.length - 1) {
-      const temp = this.urlList[index];
-      this.urlList[index] = this.urlList[index + 1];
-      this.urlList[index + 1] = temp;
+      [this.urlList[index + 1], this.urlList[index]] = [
+        this.urlList[index],
+        this.urlList[index + 1],
+      ];
     }
   }
 
   copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Copied to clipboard');
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => alert('Copied to clipboard'))
+      .catch((err) => console.error('Clipboard copy failed', err));
   }
 
   exportData(format: string) {
     const urlListData = btoa(JSON.stringify(this.urlList));
-    let data: string = '';
+    let data = '';
     switch (format) {
       case 'export-code':
         data = urlListData;
@@ -103,7 +105,7 @@ export class AppComponent implements OnInit {
       default:
         console.warn('Unknown export format:', format);
     }
-    this.importInput = data; // Display the exported data in the textarea
+    this.importInput = data;
   }
 
   importData(inputData: string) {
@@ -117,7 +119,6 @@ export class AppComponent implements OnInit {
         : inputData;
       const data = JSON.parse(atob(importData));
       this.urlList = data;
-
       this.showPopup(
         'Data Imported!',
         'Your URL list has been imported successfully.'
@@ -134,17 +135,15 @@ export class AppComponent implements OnInit {
         const placeholders = [...url.matchAll(this.placeholderRegex)].map(
           (match) => match[0]
         );
-        const uniquePlaceholders = [...new Set(placeholders)];
+        const uniquePlaceholders = Array.from(new Set(placeholders));
         const missing = this.placeholderTags.filter(
           (tag) => !uniquePlaceholders.includes(tag)
         );
-        const completeness = `${uniquePlaceholders.length}/4`;
-
         return {
           index,
           url,
           placeholders: uniquePlaceholders,
-          completeness,
+          completeness: `${uniquePlaceholders.length}/4`,
           missing,
           valid: uniquePlaceholders.length === this.placeholderTags.length,
         };
@@ -188,5 +187,10 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       document.body.removeChild(popup);
     }, 1000);
+  }
+
+  // trackBy function for ngFor loops
+  trackByIndex(index: number): number {
+    return index;
   }
 }

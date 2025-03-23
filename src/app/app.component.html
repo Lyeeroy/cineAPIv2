@@ -1,4 +1,3 @@
-<app-header></app-header>
 <div class="w-full mx-auto md:w-3xl flex flex-col h-full">
   <h1
     class="text-3xl font-bold mb-6 text-center p-4 text-[#333333] dark:text-white"
@@ -47,7 +46,7 @@
       class="p-4 space-y-3 overflow-y-auto border rounded-lg max-h-[40vh] min-h-[40vh] bg-gray-50 dark:border-gray-500 dark:bg-[#121212]"
     >
       <div
-        *ngFor="let url of urlList; let i = index"
+        *ngFor="let url of urlList; let i = index; trackBy: trackByIndex"
         class="flex items-center space-x-2 bg-white p-2 rounded-lg border dark:bg-[#1a1a1a] dark:border-gray-600"
       >
         <button
@@ -204,27 +203,27 @@
       importing, add <code class="text-red-900">&redirect=true</code> in the
       URL.
     </p>
-    <pre
-      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
-    ><span class="text-white">/apis.html?import={{ '{' }}code{{ '}' }}&redirect=true</span></pre>
+    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+<span class="text-white">/apis.html?import={{ '{' }}code{{ '}' }}&redirect=true</span>
+    </pre>
 
     <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
       URL Syntax:
     </h2>
-    <pre
-      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
-    ><span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">/</span><span class="text-[#ff69b4]">id</span><span class="text-white">/</span><span class="text-[#00bcd4]">season</span><span class="text-white">/</span><span class="text-[#8bc34a]">episode</span></pre>
+    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+<span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">/</span><span class="text-[#ff69b4]">id</span><span class="text-white">/</span><span class="text-[#00bcd4]">season</span><span class="text-white">/</span><span class="text-[#8bc34a]">episode</span>
+    </pre>
 
     <p class="mb-2 mt-2 text-black dark:text-white">Manual Override:</p>
-    <pre
-      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
-    ><span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">&</span><span class="text-[#ff69b4]">tv</span><span class="text-white">=</span><span class="text-[#00bcd4]">series</span><span class="text-white">&</span><span class="text-[#8bc34a]">movie</span><span class="text-white">=</span><span class="text-[#00e676]">film</span></pre>
+    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+<span class="text-white">example.com/</span><span class="text-[#ff8c00]">type</span><span class="text-white">&</span><span class="text-[#ff69b4]">tv</span><span class="text-white">=</span><span class="text-[#00bcd4]">series</span><span class="text-white">&</span><span class="text-[#8bc34a]">movie</span><span class="text-white">=</span><span class="text-[#00e676]">film</span>
+    </pre>
 
     <p class="mt-2 text-black dark:text-white">
       - <span class="text-[#ff8c00]">type</span> is automatically filled as
       <em class="text-[#ff8c00]">movie</em> or
-      <em class="text-[#ff8c00]">tv show</em> based on the TMDB ID.<br />-
-      <span class="text-[#ff69b4]">id</span>,
+      <em class="text-[#ff8c00]">tv show</em> based on the TMDB ID.<br />
+      - <span class="text-[#ff69b4]">id</span>,
       <span class="text-[#00bcd4]">season</span>, and
       <span class="text-[#8bc34a]">episode</span> are placeholders that will be
       replaced dynamically.
@@ -233,9 +232,9 @@
     <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
       Example:
     </h2>
-    <pre
-      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
-    ><span class="text-white">example.com/</span><span class="text-[#ff8c00]">movie</span><span class="text-white">/</span><span class="text-[#ff69b4]">12345</span><span class="text-white">/</span><span class="text-[#00bcd4]">1</span><span class="text-white">/</span><span class="text-[#8bc34a]">2</span></pre>
+    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+<span class="text-white">example.com/</span><span class="text-[#ff8c00]">movie</span><span class="text-white">/</span><span class="text-[#ff69b4]">12345</span><span class="text-white">/</span><span class="text-[#00bcd4]">1</span><span class="text-white">/</span><span class="text-[#8bc34a]">2</span>
+    </pre>
 
     <p class="mt-2 text-black dark:text-white">
       In this example, the <span class="text-[#ff8c00]">type</span> will be
@@ -248,9 +247,9 @@
     <h2 class="text-xl font-bold mt-4 mb-2 text-black dark:text-white">
       Naming a Source
     </h2>
-    <pre
-      class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2"
-    ><span class="text-white">Example:</span> <span class="text-[#00e676]">https://example.com</span></pre>
+    <pre class="bg-[#1a1a1a] p-3 rounded-lg text-sm mt-2">
+<span class="text-white">Example:</span> <span class="text-[#00e676]">https://example.com</span>
+    </pre>
   </div>
 
   <div class="p-4 border-t mt-4 flex-shrink-0 border-[#333]">
@@ -281,7 +280,7 @@
     Debug Panel 📝
   </h2>
   <div class="text-sm space-y-4 text-gray-300">
-    <div *ngFor="let info of debugInfo">
+    <div *ngFor="let info of debugInfo; trackBy: trackByIndex">
       <p>Index: {{ info.index }}</p>
       <p>URL: {{ info.url }}</p>
       <p>Placeholders: {{ info.placeholders.join(", ") }}</p>
